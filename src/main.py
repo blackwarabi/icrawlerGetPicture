@@ -9,6 +9,7 @@ import os
 import shutil
 import PySimpleGUI as sg
 import glob
+import subprocess
 
 sg.theme('Dark Blue 3')
 
@@ -25,10 +26,11 @@ window = sg.Window('画像集めくん beta', layout)
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED:
-            break
+        break
     if event == 'clear':
-            window['getSearchName'].update('')
-            window['getNum'].update('10')
+        #クリア処理
+        window['getSearchName'].update('')
+        window['getNum'].update('10')
     if event == 'imggetstart':
         #入力チェック
         if values['folderPath'] == '' or values['getSearchName'] == '':
@@ -44,11 +46,15 @@ while True:
         print('処理中')
         #Bing用クローラーの生成
         bing_crawler = BingImageCrawler(
-            downloader_threads=4,           #ダウンローダーのスレッド数
+            downloader_threads=4,                            #ダウンローダーのスレッド数
             storage={'root_dir': values['inputFolderPath']}) #ダウンロード先のディレクトリ名
 
         #キーワード検索による画像収集
         bing_crawler.crawl(keyword=values['getSearchName'],max_num=int(values['getNum']))
+        #ファイル出力用のパスを生成
+        inputFolderPath = values['inputFolderPath'].replace('/','\\')
         print('画像を取得しました。')
+        #メッセージ表示後に画像をダウンロードしたフォルダを開く
+        subprocess.run('explorer {}'.format(inputFolderPath))
 
 window.close()
