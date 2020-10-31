@@ -30,16 +30,17 @@ while True:
             window['getSearchName'].update('')
             window['getNum'].update('10')
     if event == 'imggetstart':
-        checkdir = glob.glob(values['inputFolderPath']+"/*")
-        #実行前にイメージファルダに画像があれば警告してしょりしない
-
+        #入力チェック
         if values['folderPath'] == '' or values['getSearchName'] == '':
             print('未入力の項目があります。確認してください。')
             continue
 
+        #実行前にイメージフォルダに画像があれば警告して処理しない
+        checkdir = glob.glob(values['inputFolderPath']+"/*")
         if len(checkdir) > 0:
             print('保存先にファイルが存在します。空のフォルダを選択してください。')
             continue
+
         print('処理中')
         #Bing用クローラーの生成
         bing_crawler = BingImageCrawler(
