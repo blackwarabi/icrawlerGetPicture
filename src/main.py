@@ -16,7 +16,7 @@ layout = [
             [sg.Text('保存先',size=(6,1)),sg.Input(size=(20,1) ,key='folderPath',disabled=True),sg.FolderBrowse('選択',key='inputFolderPath')],
             [sg.Text('取得したい画像の名称を入力',size=(30,1))],
             [sg.InputText('', size=(40,1),key='getSearchName')],
-            [sg.Text('画像枚数',size=(8,1)),sg.Combo(('10','20','30','40','50','60','70','80','90','100'),default_value='10', size=(4,1),key='getNum')],
+            [sg.Text('画像枚数',size=(8,1)),sg.Combo(('10','20','30','40','50'),default_value='10', size=(4,1),key='getNum')],
             [sg.Button('画像取得', key='imggetstart'),sg.Button('クリア', key='clear')],
             [sg.Output(size=(50, 10),key='output')]
         ]
