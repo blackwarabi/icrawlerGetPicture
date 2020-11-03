@@ -5,8 +5,6 @@ Created on 2020/10/31
 '''
 
 from icrawler.builtin import BingImageCrawler
-import os
-import shutil
 import PySimpleGUI as sg
 import glob
 import subprocess
@@ -43,7 +41,7 @@ while True:
             print('保存先にファイルが存在します。空のフォルダを選択してください。')
             continue
 
-        print('処理中')
+        print('処理中...')
         #Bing用クローラーの生成
         bing_crawler = BingImageCrawler(
             downloader_threads=4,                            #ダウンローダーのスレッド数
@@ -53,7 +51,7 @@ while True:
         bing_crawler.crawl(keyword=values['getSearchName'],max_num=int(values['getNum']))
         #ファイル出力用のパスを生成
         inputFolderPath = values['inputFolderPath'].replace('/','\\')
-        print('画像を取得しました。')
+        print('処理が終了しました。')
         #メッセージ表示後に画像をダウンロードしたフォルダを開く
         subprocess.run('explorer {}'.format(inputFolderPath))
 
