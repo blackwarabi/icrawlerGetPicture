@@ -55,12 +55,12 @@ def main():
 
     window.close()
 
-#クローラー作成とっ実行処理
+#クローラー作成と実行処理
 def bingCrawler(folderPath,getSearchName,getNum):
     #Bing用クローラーの生成
     bing_crawler = BingImageCrawler(
         downloader_threads=4,                  #ダウンローダーのスレッド数
-        storage={'root_dir': folderPath}) #ダウンロード先のディレクトリ名
+        storage={'root_dir': folderPath})      #ダウンロード先のディレクトリ名
 
     #キーワード検索による画像収集
     bing_crawler.crawl(keyword=getSearchName,max_num=int(getNum))
