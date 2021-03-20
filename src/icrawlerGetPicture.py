@@ -10,6 +10,8 @@ import glob
 import subprocess
 import threading
 import time
+import os
+import shutil
 
 #メイン処理
 def main():
@@ -23,7 +25,7 @@ def main():
                 [sg.Button('画像取得', key='imggetstart'),sg.Button('クリア', key='clear')],
                 [sg.Output(size=(50, 10),key='output')]
             ]
-    window = sg.Window('画像集めくん beta', layout)
+    window = sg.Window('ImageSearch Ver.1.2.0', layout)
 
     while True:
         event, values = window.read()
@@ -36,16 +38,17 @@ def main():
         if event == 'imggetstart':
             #入力チェック
             if values['folderPath'] == '' or values['getSearchName'] == '':
-                print('未入力の項目があります。確認してください。')
+                sg.popup_error('未入力の項目があります。確認してください。',title='ERROR')
                 continue
 
             #実行前にイメージフォルダに画像があれば警告して処理しない
             checkdir = glob.glob(values['inputFolderPath']+"/*")
             if len(checkdir) > 0:
-                print('保存先にファイルが存在します。空のフォルダを選択してください。')
-                continue
-
-            print('処理開始')
+                popup_select = sg.popup_yes_no('保存先にファイルが存在します。\nフォルダごと再作成してもよろしいですか？\n※フォルダ内のファイルはすべて削除されます。',title='CHECK')
+                if popup_select == "No":
+                    continue
+                shutil.rmtree(values['inputFolderPath'])
+                os.mkdir(values['inputFolderPath'])
             #表示のタイミングを合わせるため1秒待つ
             time.sleep(1)
             #画像の取得処理を行う
@@ -66,7 +69,6 @@ def bingCrawler(folderPath,getSearchName,getNum):
     bing_crawler.crawl(keyword=getSearchName,max_num=int(getNum))
     #表示のタイミングを合わせるため2秒待つ
     time.sleep(2)
-    print('処理終了')
     #メッセージ表示後に画像をダウンロードしたフォルダを開く
     subprocess.run('explorer {}'.format(folderPath.replace('/','\\')))
 
